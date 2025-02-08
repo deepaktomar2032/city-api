@@ -1,0 +1,16 @@
+version: '3.9'
+
+services:
+  city-api-dev:
+    container_name: city-api-dev
+    build:
+      context: .
+    volumes:
+      - ./:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - 3000:3000
+    command: npm run start:dev
+    environment:
+      NODE_ENV: development
+      PORT: 3000
