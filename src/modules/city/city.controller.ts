@@ -1,4 +1,4 @@
-import { Get, Controller, Inject, Query } from '@nestjs/common'
+import { Get, Controller, Inject, Query, UsePipes, ValidationPipe } from '@nestjs/common'
 import { ApiTags } from '@nestjs/swagger'
 import { CityService } from './city.service'
 import { City, SearchCity } from 'src/types'
@@ -15,8 +15,9 @@ export class CityController {
     return await this.cityService.getAllCities()
   }
 
-  // Get city by name match
+  // Get city by name match (Not exposed to frontend but could be tested in Postman)
   @Get('/search')
+  @UsePipes(new ValidationPipe({ whitelist: true, transform: true }))
   async getCityByMatch(@Query() query: SearchCity): Promise<City[]> {
     return await this.cityService.getCityByMatch(query.name)
   }
