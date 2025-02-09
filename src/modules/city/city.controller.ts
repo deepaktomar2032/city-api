@@ -1,7 +1,7 @@
-import { Get, Controller, Inject } from '@nestjs/common'
+import { Get, Controller, Inject, Query } from '@nestjs/common'
 import { ApiTags } from '@nestjs/swagger'
 import { CityService } from './city.service'
-import { City } from 'src/types'
+import { City, SearchCity } from 'src/types'
 import { API_V1_ROUTE } from 'src/utils'
 
 @ApiTags('City')
@@ -12,6 +12,12 @@ export class CityController {
   // Get all cities
   @Get('/city')
   async getAllCities(): Promise<City[]> {
-    return this.cityService.getAllCities()
+    return await this.cityService.getAllCities()
+  }
+
+  // Get city by name match
+  @Get('/search')
+  async getCityByMatch(@Query() query: SearchCity): Promise<City[]> {
+    return await this.cityService.getCityByMatch(query.name)
   }
 }
