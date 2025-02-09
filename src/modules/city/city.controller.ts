@@ -1,7 +1,7 @@
-import { Get, Controller, Inject, Query, UsePipes, ValidationPipe } from '@nestjs/common'
-import { ApiTags } from '@nestjs/swagger'
+import { Get, Controller, Inject, Query, BadRequestException } from '@nestjs/common'
+import { ApiTags, ApiQuery } from '@nestjs/swagger'
 import { CityService } from './city.service'
-import { City, SearchCity } from 'src/types'
+import { City } from 'src/types'
 import { API_V1_ROUTE } from 'src/utils'
 
 @ApiTags('City')
@@ -17,8 +17,9 @@ export class CityController {
 
   // Get city by name match (Not exposed to frontend but could be tested in Postman)
   @Get('/search')
-  @UsePipes(new ValidationPipe({ whitelist: true, transform: true }))
-  async getCityByMatch(@Query() query: SearchCity): Promise<City[]> {
-    return await this.cityService.getCityByMatch(query.name)
+  @ApiQuery({ name: 'name', type: String, required: true, description: 'City name to search' })
+  async getCityByMatch(@Query('name') name: string): Promise<City[]> {
+    if (!name) throw new BadRequestException('The name query parameter is required')
+    return await this.cityService.getCityByMatch(name)
   }
 }

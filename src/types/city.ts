@@ -1,5 +1,3 @@
-import { IsString, IsNotEmpty } from 'class-validator'
-
 export type City = {
   name: string
   name_native: string
@@ -10,10 +8,4 @@ export type City = {
   population: string
   founded: string
   landmarks: string[]
-}
-
-export class SearchCity {
-  @IsNotEmpty({ message: 'The name query parameter is required' })
-  @IsString()
-  name: string
 }
