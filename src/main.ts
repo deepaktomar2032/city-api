@@ -11,11 +11,7 @@ async function bootstrap() {
     .setVersion('1.0')
     .build()
 
-  app.enableCors({
-    origin: 'http://localhost:8000',
-    methods: 'GET,POST,PUT,DELETE',
-    credentials: true
-  })
+  app.enableCors({ origin: 'http://localhost:8000', methods: 'GET' })
 
   const document = SwaggerModule.createDocument(app, config)
   SwaggerModule.setup('/api-docs', app, document)
