@@ -34,7 +34,7 @@
    -  API Docs - http://localhost:3000/api-docs
    -  Health check: GET - http://localhost:3000/api/v1/health
    -  Get all cities: GET - http://localhost:3000/api/v1/city
-   -  Search city by name: GET - http://localhost:3000/api/v1/search?name='cityName'
+   -  Search city by name match: GET - http://localhost:3000/api/v1/search?name='cityName' (doesn’t have to be the complete name) (Not exposed to frontend but could be tested in Postman)
 
 ### Project Structure
 -  src/
