@@ -61,11 +61,15 @@ describe('CityService', () => {
       expect(cacheManager.get).toHaveBeenCalledWith(`${CACHE_KEY_PREFIX}${name.toLowerCase()}`)
     })
 
-    it('should throw NotFoundException if no city matches the given name', async () => {
-      const name = 'Atlantis'
+    it('should throw a NotFoundException if no city matches the given name', async () => {
+      const cityName = 'Atlantis'
       cacheManager.get.mockResolvedValue(null)
+      const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {})
 
-      await expect(service.getCityByMatch(name)).rejects.toThrow(new NotFoundException(message.Not_Found))
+      await expect(service.getCityByMatch(cityName)).rejects.toThrow(NotFoundException)
+      expect(cacheManager.set).not.toHaveBeenCalled()
+
+      consoleErrorSpy.mockRestore()
     })
   })
 })
