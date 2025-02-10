@@ -11,6 +11,7 @@ export class CityService {
   // Get all cities
   async getAllCities(): Promise<City[]> {
     try {
+      if (cityData.cities.length === 0) throw new NotFoundException(message.No_City_Found)
       return cityData.cities
     } catch (error: unknown) {
       console.error(`CityService:getAllCities: ${error}`)
@@ -29,14 +30,14 @@ export class CityService {
       if (cachedResult) return cachedResult
 
       const filteredCities = cityData.cities.filter((city) => city.name.toLowerCase().includes(name.toLowerCase()))
-      if (filteredCities.length === 0) throw new NotFoundException(message.Not_Found)
+      if (filteredCities.length === 0) throw new NotFoundException(message.No_City_Found)
 
       await this.cacheManager.set(cacheKey, filteredCities, CACHE_DEFAULT_TIME)
       return filteredCities
     } catch (error: unknown) {
       console.error(`CityService:getCityByMatch: ${error}`)
-      if (error instanceof NotFoundException) {
-        throw new NotFoundException(message.Not_Found)
+      if (error instanceof InternalServerErrorException) {
+        throw new InternalServerErrorException(message.Internal_Server_Error)
       }
       throw error
     }
