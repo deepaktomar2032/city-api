@@ -25,11 +25,13 @@ export class CityService {
   // Get city by name match
   async getCityByMatch(name: string): Promise<City[]> {
     try {
-      const cacheKey = `${CACHE_KEY_PREFIX}${name.toLowerCase()}`
-      const cachedResult = await this.cacheManager.get<City[]>(cacheKey)
+      const cacheKey: string = `${CACHE_KEY_PREFIX}${name.toLowerCase()}`
+      const cachedResult: City[] = await this.cacheManager.get<City[]>(cacheKey)
       if (cachedResult) return cachedResult
 
-      const filteredCities = cityData.cities.filter((city) => city.name.toLowerCase().includes(name.toLowerCase()))
+      const filteredCities: City[] = cityData.cities.filter((city) =>
+        city.name.toLowerCase().includes(name.toLowerCase())
+      )
       if (filteredCities.length === 0) throw new NotFoundException(message.No_City_Found)
 
       await this.cacheManager.set(cacheKey, filteredCities, CACHE_DEFAULT_TIME)
